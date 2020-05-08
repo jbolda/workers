@@ -18,4 +18,5 @@ jobs:
         uses: cloudflare/wrangler-action@1.1.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          environment: 'production'
           workingDirectory: 'workers/${{ matrix.deploy-folder }}'
