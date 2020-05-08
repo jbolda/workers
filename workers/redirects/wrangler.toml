@@ -4,3 +4,8 @@ account_id = ""
 workers_dev = true
 route = ""
 zone_id = ""
+
+[env.production]
+# dummy route pattern
+# config in dashboard
+route = "1.2.3.4"
