@@ -1,0 +1,13 @@
+{
+  "name": "workers",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/jbolda/workers.git",
+  "author": "Jacob Bolda <me@jacobbolda.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "workers/*"
+  ],
+  "devDependencies": {}
+}

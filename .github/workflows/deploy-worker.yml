@@ -1,0 +1,21 @@
+name: deploy workers to Cloudflare
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deploy-folder: ['redirects']
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: publish
+        uses: cloudflare/wrangler-action@1.1.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: 'workers/${{ matrix.deploy-folder }}'
