@@ -17,4 +17,8 @@ const externalHostname = 'www.jacobbolda.com'
 const redirectMap = new Map([
   ['/loan', 'https://' + externalHostname + '/loan-efficiency-calculator/'],
   ['/gd', 'https://' + externalHostname + '/linking-data-in-gatsby/'],
+  [
+    '/personal-theme',
+    'https://raw.githubusercontent.com/jbolda/gatsby-theme/master/recipes/personal/recipe.mdx',
+  ],
 ])
