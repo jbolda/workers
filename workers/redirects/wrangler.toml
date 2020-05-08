@@ -1,11 +1,14 @@
 name = "redirects"
 type = "javascript"
-account_id = ""
 workers_dev = true
+# account_id is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
+account_id = "70e75d96900fefabd0c7b1c2338e715b"
 route = ""
-zone_id = ""
 
 [env.production]
+# this is the zone for bolda.dev
+# it is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
+zone_id = "3e20b72769f70d0d710ccce4306247a6"
 # dummy route pattern
 # config in dashboard
 route = "1.2.3.4"
