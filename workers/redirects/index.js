@@ -2,6 +2,23 @@ async function handleRequest(request) {
   let requestURL = new URL(request.url)
   let path = requestURL.pathname.replace(/\/+$/, '')
   let location = redirectMap.get(path)
+
+  // if homepage
+  if (location === '/') {
+    const home = `<html>
+    <body>
+    <p>Visit <a href='https://www.jacobbolda.com'>jacobbolda.com</a></p>
+    ${Array.from(redirectMap).reduce(
+      (string, item) =>
+        `${string}<p><span>${item[0]}</span><span> points to </span><span><a href='${item[1]}'>${item[1]}</a></span></p>`,
+      '',
+    )}
+    </body>
+    </html>`
+    return new Response(home)
+  }
+
+  // any other link
   if (location) {
     return Response.redirect(location, 301)
   }
