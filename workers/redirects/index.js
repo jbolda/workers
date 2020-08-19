@@ -1,10 +1,9 @@
 async function handleRequest(request) {
   let requestURL = new URL(request.url)
-  let path = requestURL.pathname.replace(/\/+$/, '')
-  let location = redirectMap.get(path)
 
+  let path = requestURL.pathname.replace(/\/+$/, '')
   // if homepage
-  if (location === '/') {
+  if (path === '') {
     const home = `<html>
     <body>
     <p>Visit <a href='https://www.jacobbolda.com'>jacobbolda.com</a></p>
@@ -18,10 +17,12 @@ async function handleRequest(request) {
     return new Response(home)
   }
 
+  let location = redirectMap.get(path)
   // any other link
   if (location) {
     return Response.redirect(location, 301)
   }
+
   // If not in map, return the original request
   return Response.redirect(`https://www.jacobbolda.com${path}/`, 301)
 }
