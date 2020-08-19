@@ -14,7 +14,7 @@ async function handleRequest(request) {
     )}
     </body>
     </html>`
-    return new Response(home)
+    return new Response(home, { headers: { 'Content-Type': 'text/html' } })
   }
 
   let location = redirectMap.get(path)
