@@ -1,6 +1,9 @@
 name = "redirects"
 type = "javascript"
 workers_dev = true
+
+compatibility_date = "2022-01-06"
+
 # account_id is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
 account_id = "70e75d96900fefabd0c7b1c2338e715b"
 route = ""
