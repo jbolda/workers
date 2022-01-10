@@ -12,3 +12,6 @@ zone_id = "3e20b72769f70d0d710ccce4306247a6"
 # dummy route pattern
 # config in dashboard
 route = "1.2.3.4"
+
+[vars]
+TABLE_NAME = "shortlinks"

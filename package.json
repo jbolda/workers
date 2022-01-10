@@ -1,6 +1,6 @@
 {
   "name": "workers",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "index.js",
   "repository": "https://github.com/jbolda/workers.git",
   "author": "Jacob Bolda <me@jacobbolda.com>",
@@ -9,5 +9,9 @@
   "workspaces": [
     "workers/*"
   ],
-  "devDependencies": {}
+  "devDependencies": {},
+  "volta": {
+    "node": "16.13.1",
+    "yarn": "1.22.17"
+  }
 }
