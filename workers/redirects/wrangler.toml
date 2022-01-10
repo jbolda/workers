@@ -13,6 +13,7 @@ routes = ["bolda.dev/*"]
 zone_id = "3e20b72769f70d0d710ccce4306247a6"
 
 [vars]
+AIRTABLE_BASE = "appQ4j8G66ikJyYjY"
 TABLE_NAME = "shortlinks"
 
 # [secrets]
