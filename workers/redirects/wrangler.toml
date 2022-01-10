@@ -1,14 +1,15 @@
 compatibility_date = "2022-01-06"
 name = "redirects"
 type = "javascript"
+workers_dev = true
 
 # account_id is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
 account_id = "70e75d96900fefabd0c7b1c2338e715b"
-route = ["bolda.dev/*"]
 
 [env.production]
 # this is the zone for bolda.dev
 # it is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
+routes = ["bolda.dev/*"]
 zone_id = "3e20b72769f70d0d710ccce4306247a6"
 
 [vars]
