@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "redirects",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A template for kick starting a Cloudflare Workers project",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,9 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
-    "@cloudflare/wrangler": "^1.9.0"
+    "@cloudflare/wrangler": "^1.19.7"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }
