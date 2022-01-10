@@ -5,16 +5,14 @@ workers_dev = true
 
 # account_id is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
 account_id = "70e75d96900fefabd0c7b1c2338e715b"
+vars = {AIRTABLE_BASE = "appQ4j8G66ikJyYjY", TABLE_NAME = "shortlinks"}
 
 [env.production]
 # this is the zone for bolda.dev
 # it is not a secret per https://community.cloudflare.com/t/the-kv-vulnerability/125646
 routes = ["bolda.dev/*"]
+vars = {AIRTABLE_BASE = "appQ4j8G66ikJyYjY", TABLE_NAME = "shortlinks"}
 zone_id = "3e20b72769f70d0d710ccce4306247a6"
-
-[vars]
-AIRTABLE_BASE = "appQ4j8G66ikJyYjY"
-TABLE_NAME = "shortlinks"
 
 # [secrets]
 # AIRTABLE_KEY
