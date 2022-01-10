@@ -1,9 +1,10 @@
 async function handleRequest(/** @type {FetchEvent} */ event) {
   const url = new URL(event.request.url)
 
+  const cache = caches.default
+  const cacheKey = new Request(url.toString(), event.request)
+
   if (!url.searchParams.has('force')) {
-    const cache = caches.default
-    const cacheKey = new Request(url.toString(), event.request)
     const cachedResponse = await cache.match(cacheKey)
     if (cachedResponse) return cachedResponse
   }
@@ -11,7 +12,6 @@ async function handleRequest(/** @type {FetchEvent} */ event) {
   if (url.pathname == '/') {
     const query = new URLSearchParams({
       filterByFormula: `AND(Active)`,
-      'fields[]': 'URL',
     }).toString()
     const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${TABLE_NAME}?${query}`
     const result = await fetch(endpoint, {
@@ -19,13 +19,21 @@ async function handleRequest(/** @type {FetchEvent} */ event) {
     })
 
     const data = await result.json()
+    console.dir(data.records[0].fields)
 
     const home = `<html>
     <body>
     <p>Visit <a href='https://www.jacobbolda.com'>jacobbolda.com</a></p>
     ${Array.from(data.records).reduce(
       (string, item) =>
-        `${string}<p><span>${item[0]?.fields.URL}</span><span> points to </span><span><a href='${item[1]?.fields.URL}'>${item[1]?.fields.URL}</a></span></p>`,
+        item.fields?.Active
+          ? `${string}
+          <p>
+          <span><a href='https://bolda.dev/${item.fields?.Slug}'/>bolda.dev/${item.fields?.Slug}</a></span>
+          <span> points to </span>
+          <span><a href='${item.fields?.URL}'>${item.fields?.URL}</a></span>
+          </p>`
+          : string,
       '',
     )}
     </body>
@@ -56,7 +64,7 @@ async function handleRequest(/** @type {FetchEvent} */ event) {
       return response
     }
 
-    return Response.redirect(`https://www.jacobbolda.com${path}/`, 307)
+    return Response.redirect(`https://www.jacobbolda.com${slug}/`, 307)
   }
 
   return new Response(null, { status: 404 })
