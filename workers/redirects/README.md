@@ -1,15 +1,7 @@
-# 👷 `worker-template` Hello World
+# (based on) tableflare
 
-A template for kick starting a Cloudflare worker project.
+Airtable + Cloudflare Workers URL Shortener 🌤
 
-[`index.js`](https://github.com/cloudflare/worker-template/blob/master/index.js) is the content of the Workers script.
+## Inspiration
 
-#### Wrangler
-
-To generate using [wrangler](https://github.com/cloudflare/wrangler)
-
-```
-wrangler generate projectname https://github.com/cloudflare/worker-template
-```
-
-Further documentation for Wrangler can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler).
+Built up from a combination of previous iterations and the code in [tableflare](https://github.com/grikomsn/tableflare) to enable an integration with Airtable.

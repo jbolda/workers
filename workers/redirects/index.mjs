@@ -1,15 +1,31 @@
-async function handleRequest(request) {
-  let requestURL = new URL(request.url)
+async function handleRequest(/** @type {FetchEvent} */ event) {
+  const url = new URL(event.request.url)
 
-  let path = requestURL.pathname.replace(/\/+$/, '')
-  // if homepage
-  if (path === '') {
+  if (!url.searchParams.has('force')) {
+    const cache = caches.default
+    const cacheKey = new Request(url.toString(), event.request)
+    const cachedResponse = await cache.match(cacheKey)
+    if (cachedResponse) return cachedResponse
+  }
+
+  if (url.pathname == '/') {
+    const query = new URLSearchParams({
+      filterByFormula: `AND(Active)`,
+      'fields[]': 'URL',
+    }).toString()
+    const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${TABLE_NAME}?${query}`
+    const result = await fetch(endpoint, {
+      headers: { Authorization: `Bearer ${AIRTABLE_KEY}` },
+    })
+
+    const data = await result.json()
+
     const home = `<html>
     <body>
     <p>Visit <a href='https://www.jacobbolda.com'>jacobbolda.com</a></p>
-    ${Array.from(redirectMap).reduce(
+    ${Array.from(data.records).reduce(
       (string, item) =>
-        `${string}<p><span>${item[0]}</span><span> points to </span><span><a href='${item[1]}'>${item[1]}</a></span></p>`,
+        `${string}<p><span>${item[0]?.fields.URL}</span><span> points to </span><span><a href='${item[1]?.fields.URL}'>${item[1]?.fields.URL}</a></span></p>`,
       '',
     )}
     </body>
@@ -17,26 +33,35 @@ async function handleRequest(request) {
     return new Response(home, { headers: { 'Content-Type': 'text/html' } })
   }
 
-  let location = redirectMap.get(path)
-  // any other link
-  if (location) {
-    return Response.redirect(location, 301)
+  const slug = url.pathname.split('/')[1]
+  if (slug) {
+    const query = new URLSearchParams({
+      filterByFormula: `AND(Slug="${slug}",Active)`,
+      'fields[]': 'URL',
+    }).toString()
+    const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${TABLE_NAME}?${query}`
+    const result = await fetch(endpoint, {
+      headers: { Authorization: `Bearer ${AIRTABLE_KEY}` },
+    })
+
+    const data = await result.json()
+    const redirectUrl = data.records[0]?.fields.URL
+
+    if (redirectUrl) {
+      const response = Response.redirect(redirectUrl, 307)
+      if (url.searchParams.has('force')) {
+        event.waitUntil(cache.delete(cacheKey))
+      }
+      event.waitUntil(cache.put(cacheKey, response.clone()))
+      return response
+    }
+
+    return Response.redirect(`https://www.jacobbolda.com${path}/`, 307)
   }
 
-  // If not in map, return the original request
-  return Response.redirect(`https://www.jacobbolda.com${path}/`, 301)
+  return new Response(null, { status: 404 })
 }
 
 addEventListener('fetch', async event => {
-  event.respondWith(handleRequest(event.request))
+  event.respondWith(handleRequest(event))
 })
-
-const externalHostname = 'www.jacobbolda.com'
-const redirectMap = new Map([
-  ['/loan', 'https://' + externalHostname + '/loan-efficiency-calculator/'],
-  ['/gd', 'https://' + externalHostname + '/linking-data-in-gatsby/'],
-  [
-    '/personal-theme',
-    'https://raw.githubusercontent.com/jbolda/gatsby-theme/master/recipes/personal/recipe.mdx',
-  ],
-])
